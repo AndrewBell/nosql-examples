@@ -160,6 +160,36 @@ The following can all be completed via curl requests against the REST API.
 
   * The following query fetches all the contents for the D&D game-system: `curl -X GET localhost:5984/catalog/_design/contents/_view/all-contents-and-amounts?include_docs=true -G --data-urlencode start_key='["735174c9bbfec0115fa1e65e63001edc",""]' --data-urlencode end_key='["735174c9bbfec0115fa1e65e63001edc",{}]' | python -mjson.tool`
 
-## What's missing
-
 ## Summary
+
+### Our Goals
+
+The three goals to accomplish were:
+
+* Create an efficient view
+
+* Support the equivalent of a SQL many-to-many relationship join
+
+* Present views of a composite object
+
+We built a view using a CouchDB Design document. This is defined by a map function that emits key-value pairs for CouchDB to index. Future updates to the index are updated on write, leading to quick look ups.
+
+Using another view, we create a map function that identifies all documents that have `contents` that references other documents. We create an index on the parent document's IDs, and store the value of the contents. CouchDB provides the document related to the contents entry. We can pass query parameters to retrieve all contents for a particular document.
+ 
+Unfortunately, this still requires two REST requests to fetch our data. Potentially [List Functions](http://docs.couchdb.org/en/2.0.0/couchapp/ddocs.html?highlight=list#list-functions) could be used to combine multiple objects. But, could prove to be difficult to handle things like paging and sorting.
+
+So, we're unable to satisfy the last goal. We could potentially build a service on top of our database to collate this information for us.
+
+### Benefits
+
+* CouchDB provides a REST API out of the box. It's syntax is fairly straightforward, but might need to be transformed by another service if you are looking for a particular REST format.
+* [Validation](http://docs.couchdb.org/en/2.0.0/couchapp/ddocs.html#vdufun) can be built into the API
+* Relatively low learning curve
+
+## References
+
+[CouchDB Docs](http://docs.couchdb.org/en/2.0.0/)
+
+[Docker Image](https://hub.docker.com/r/klaemo/couchdb/)
+
+[Relevant Stack Overflow Answer](https://stackoverflow.com/questions/3033443/best-way-to-do-one-to-many-join-in-couchdb/3035522#3035522)

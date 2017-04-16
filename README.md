@@ -37,6 +37,14 @@ We certainly can represent this in a relational SQL database. We would have a ta
 
 It depends on where you want your pain points. This hopefully serves as an example of the pros and cons of each approach. Most non-graph NoSQL databases aren't designed to handle relational data. In fact, that's one of the distinguishing features of most NoSQL databases. But, they do give us the benefit of not having to define and maintain these relationships up front, allowing us to define these relationships as we need them.
 
+## Goals
+
+* Create an efficient view
+
+* Support the equivalent of a SQL many-to-many relationship join
+
+* Present views of a composite object
+
 ## Viewing this tutorial
 
 Each subdirectory should contain everything needed to run these examples on your machine. This does assume you have Docker running locally, as well as have access to bash.
