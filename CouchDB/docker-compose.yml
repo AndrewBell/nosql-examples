@@ -1,0 +1,6 @@
+version: '2'
+services:
+  catalog-db:
+    image: klaemo/couchdb
+    ports:
+      - "5984:5984"
